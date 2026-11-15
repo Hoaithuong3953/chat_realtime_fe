@@ -1,4 +1,4 @@
-import type { LogLevel, LoggerOptions } from '@/types/logger.types'
+import type { LogLevel, LoggerOptions } from '@/types'
 import env from './env'
 
 export const LOG_LEVEL_PRIORITY: Record<LogLevel, number> = {

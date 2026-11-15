@@ -1,5 +1,5 @@
 import { formatLogDateTime } from '@/utils/date'
-import type { LogEntry } from '@/types/logger.types'
+import type { LogEntry } from '@/types'
 import env from '@/config/env'
 
 export const getCallerLocation = (): string => {

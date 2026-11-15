@@ -1,6 +1,6 @@
 import { LOGGER_CONFIG, LOG_LEVEL_PRIORITY, LOG_LEVEL_STYLES } from '@/config/logger.config'
-import { createLogEntry, formatLogEntry } from '@/utils/logger/logger-formatter'
-import type { LogContext, LogLevel } from '@/types/logger.types'
+import { createLogEntry, formatLogEntry } from './logger-formatter'
+import type { LogContext, LogLevel } from '@/types'
 
 const shouldLog = (level: LogLevel): boolean => {
   return (
