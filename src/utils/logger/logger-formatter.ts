@@ -16,7 +16,7 @@ export const getCallerLocation = (): string => {
 
     const location = match[1].split('?')[0]
 
-    if (location.includes('logger.')) continue
+    if (location.includes('utils/logger/')) continue
 
     return location
   }
