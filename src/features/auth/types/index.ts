@@ -1,0 +1,1 @@
+export type {RegisterRequestDto, RegisterResponseDto} from './register.types'
