@@ -1,14 +1,24 @@
 import {z} from 'zod'
+import { REGISTER_LIMITS } from '@/features/auth/auth.constants'
 
 export const registerSchema = z.object({
   fullName: z
     .string()
     .min(1, 'Vui lòng nhập họ và tên')
-    .max(100, 'Họ và tên không được vượt quá 100 ký tự'),
+    .max(
+      REGISTER_LIMITS.FULL_NAME_MAX_LENGTH,
+      `Họ và tên không được vượt quá ${REGISTER_LIMITS.FULL_NAME_MAX_LENGTH} ký tự`
+    ),
   username: z
     .string()
-    .min(3, 'Tên đăng nhập phải có ít nhất 3 ký tự')
-    .max(30, 'Tên đăng nhập không được vượt quá 30 ký tự')
+    .min(
+      REGISTER_LIMITS.USERNAME_MIN_LENGTH,
+      `Tên đăng nhập phải có ít nhất ${REGISTER_LIMITS.USERNAME_MIN_LENGTH} ký tự`
+    )
+    .max(
+      REGISTER_LIMITS.USERNAME_MAX_LENGTH,
+      `Tên đăng nhập không được vượt quá ${REGISTER_LIMITS.USERNAME_MAX_LENGTH} ký tự`
+    )
     .regex(
       /^[A-Za-z][A-Za-z0-9._-]*$/,
       'Tên đăng nhập phải bắt đầu bằng chữ cái và chỉ chứa chữ cái, số, dấu chấm, gạch dưới hoặc gạch ngang',
@@ -21,7 +31,10 @@ export const registerSchema = z.object({
   }),
   password: z
     .string()
-    .min(8, 'Mật khẩu phải có ít nhất 8 ký tự')
+    .min(
+      REGISTER_LIMITS.PASSWORD_MIN_LENGTH,
+      `Mật khẩu phải có ít nhất ${REGISTER_LIMITS.PASSWORD_MIN_LENGTH} ký tự`
+    )
     .regex(/[A-Z]/, 'Mật khẩu phải có ít nhất 1 chữ hoa')
     .regex(/[a-z]/, 'Mật khẩu phải có ít nhất 1 chữ thường')
     .regex(/[0-9]/, 'Mật khẩu phải có ít nhất 1 chữ số')
