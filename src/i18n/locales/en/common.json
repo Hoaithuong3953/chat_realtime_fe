@@ -1,0 +1,10 @@
+{
+  "messages": {
+    "success": "Success",
+    "error": "An error occurred",
+    "warning": "Warning",
+    "info": "Information",
+    "unknownError": "An unknown error occurred",
+    "tryAgain": "Please try again later"
+  }
+}

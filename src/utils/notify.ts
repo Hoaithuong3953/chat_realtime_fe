@@ -1,3 +1,4 @@
+import i18n from '@/i18n'
 import { notifications } from '@mantine/notifications'
 
 type NotificationOptions = {
@@ -6,32 +7,35 @@ type NotificationOptions = {
 }
 
 export const notify = {
-    success: ({title='Thành công', message}: NotificationOptions) => {
+    success: ({title, message}: NotificationOptions) => {
         notifications.show({
-            title,
+            title: title ?? i18n.t('messages.success', {ns: 'common'}),
             message,
             color: 'green',
         })
     },
-    error: ({title='Có lỗi xảy ra', message}: NotificationOptions) => {
+
+    error: ({title, message}: NotificationOptions) => {
         notifications.show({
-            title,
+            title: title ?? i18n.t('messages.error', {ns: 'common'}),
             message,
-            color: 'red'
+            color: 'red',
         })
     },
-    warning: ({title='Cảnh báo', message}: NotificationOptions) => {
+
+    warning: ({title, message}: NotificationOptions) => {
         notifications.show({
-            title,
+            title: title ?? i18n.t('messages.warning', {ns: 'common'}),
             message,
-            color: 'yellow'
+            color: 'yellow',
         })
     },
-    info: ({title='Thông tin', message}: NotificationOptions) => {
+
+    info: ({title, message}: NotificationOptions) => {
         notifications.show({
-            title,
+            title: title ?? i18n.t('messages.info', {ns: 'common'}),
             message,
-            color: 'blue'
+            color: 'blue',
         })
     },
 }
