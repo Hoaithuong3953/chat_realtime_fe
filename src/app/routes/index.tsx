@@ -1,6 +1,6 @@
 import {createBrowserRouter} from 'react-router-dom'
 
-import {AuthLayout} from '@/layouts/AuthLayout'
+import {AuthLayout} from '@/layouts'
 import { RegisterPage } from '@/features/auth/pages'
 import {PATHS} from './paths'
 
