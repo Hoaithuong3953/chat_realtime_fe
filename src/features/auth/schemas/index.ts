@@ -1,1 +1,1 @@
-export {registerSchema, type RegisterFormValues} from './register.schema'
+export {createRegisterSchema, type RegisterFormValues} from './register.schema'

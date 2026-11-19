@@ -1,54 +1,86 @@
 import {z} from 'zod'
-import { REGISTER_LIMITS } from '@/features/auth/auth.constants'
+import type {TFunction} from 'i18next'
 
-export const registerSchema = z.object({
-  fullName: z
-    .string()
-    .min(1, 'Vui lòng nhập họ và tên')
-    .max(
-      REGISTER_LIMITS.FULL_NAME_MAX_LENGTH,
-      `Họ và tên không được vượt quá ${REGISTER_LIMITS.FULL_NAME_MAX_LENGTH} ký tự`
-    ),
-  username: z
-    .string()
-    .min(
-      REGISTER_LIMITS.USERNAME_MIN_LENGTH,
-      `Tên đăng nhập phải có ít nhất ${REGISTER_LIMITS.USERNAME_MIN_LENGTH} ký tự`
-    )
-    .max(
-      REGISTER_LIMITS.USERNAME_MAX_LENGTH,
-      `Tên đăng nhập không được vượt quá ${REGISTER_LIMITS.USERNAME_MAX_LENGTH} ký tự`
-    )
-    .regex(
-      /^[A-Za-z][A-Za-z0-9._-]*$/,
-      'Tên đăng nhập phải bắt đầu bằng chữ cái và chỉ chứa chữ cái, số, dấu chấm, gạch dưới hoặc gạch ngang',
-    ),
-  email: z.email({
-    error: (issue) =>
-      issue.input === ''
-        ? 'Vui lòng nhập email'
-        : 'Email không hợp lệ'
-  }),
-  password: z
-    .string()
-    .min(
-      REGISTER_LIMITS.PASSWORD_MIN_LENGTH,
-      `Mật khẩu phải có ít nhất ${REGISTER_LIMITS.PASSWORD_MIN_LENGTH} ký tự`
-    )
-    .regex(/[A-Z]/, 'Mật khẩu phải có ít nhất 1 chữ hoa')
-    .regex(/[a-z]/, 'Mật khẩu phải có ít nhất 1 chữ thường')
-    .regex(/[0-9]/, 'Mật khẩu phải có ít nhất 1 chữ số')
-    .regex(
-      /[!@#$%^&*()_\-+=\[{\]};:'\",.<>/?\\|`~]/,
-      'Mật khẩu phải có ít nhất 1 ký tự đặc biệt',
-    ),
-  confirmPassword: z
-    .string()
-    .min(1, 'Vui lòng xác nhận mật khẩu'),
-})
-.refine((values) => values.password === values.confirmPassword, {
-  message: 'Mật khẩu xác nhận không khớp',
-  path: ['confirmPassword'],
-})
+import {REGISTER_LIMITS} from '@/features/auth/auth.constants'
 
-export type RegisterFormValues = z.infer<typeof registerSchema>
+export const createRegisterSchema = (t: TFunction) =>
+  z.object({
+    fullName: z
+      .string()
+      .min(
+        1,
+        t('validation.required', {
+          field: t('fields.fullName'),
+        }),
+      )
+      .max(
+        REGISTER_LIMITS.FULL_NAME_MAX_LENGTH,
+        t('validation.max', {
+          field: t('fields.fullName'),
+          count: REGISTER_LIMITS.FULL_NAME_MAX_LENGTH,
+        }),
+      ),
+
+    username: z
+      .string()
+      .min(
+        REGISTER_LIMITS.USERNAME_MIN_LENGTH,
+        t('validation.min', {
+          field: t('fields.username'),
+          count: REGISTER_LIMITS.USERNAME_MIN_LENGTH,
+        }),
+      )
+      .max(
+        REGISTER_LIMITS.USERNAME_MAX_LENGTH,
+        t('validation.max', {
+          field: t('fields.username'),
+          count: REGISTER_LIMITS.USERNAME_MAX_LENGTH,
+        }),
+      )
+      .regex(
+        /^[A-Za-z][A-Za-z0-9._-]*$/,
+        t('validation.usernameFormat'),
+      ),
+
+    email: z.email({
+      error: (issue) =>
+        issue.input === ''
+          ? t('validation.required', {
+              field: t('fields.email'),
+            })
+          : t('validation.email'),
+    }),
+
+    password: z
+      .string()
+      .min(
+        REGISTER_LIMITS.PASSWORD_MIN_LENGTH,
+        t('validation.min', {
+          field: t('fields.password'),
+          count: REGISTER_LIMITS.PASSWORD_MIN_LENGTH,
+        }),
+      )
+      .regex(/[A-Z]/, t('validation.passwordUppercase'))
+      .regex(/[a-z]/, t('validation.passwordLowercase'))
+      .regex(/[0-9]/, t('validation.passwordNumber'))
+      .regex(
+        /[!@#$%^&*()_\-+=\[\]{};:'",.<>/?\\|`~]/,
+        t('validation.passwordSpecial'),
+      ),
+
+    confirmPassword: z
+      .string()
+      .min(
+        1,
+        t('validation.required', {
+          field: t('fields.confirmPassword'),
+        }),
+      ),
+  }).refine((values) => values.password === values.confirmPassword, {
+    message: t('validation.passwordMismatch'),
+    path: ['confirmPassword'],
+  })
+
+export type RegisterFormValues = z.infer<
+  ReturnType<typeof createRegisterSchema>
+>
